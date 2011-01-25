@@ -10,4 +10,4 @@ setup(name='django-reuse',
       packages=['reuse'],
       zip_safe=False,
       install_requires=['django'],
-      )
+)
