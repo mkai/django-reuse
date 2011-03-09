@@ -14,7 +14,6 @@ def active_url(request, pattern, return_value):
 @register.simple_tag
 def active_view(request, url, return_value):
     from django.core.urlresolvers import reverse
-    print reverse(url), request.path
     if reverse(url) == request.path:
         return return_value
     return ''
