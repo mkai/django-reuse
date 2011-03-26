@@ -4,6 +4,7 @@ import unicodedata
 from django.utils.encoding import force_unicode 
 from django.utils.functional import allow_lazy 
 from django.utils.translation import ugettext_lazy, ugettext as _ 
+from django.template.defaultfilters import stringfilter
 
 def truncate_chars(s, num, end_text='...'):
     """Truncates a string after a certain number of characters. Takes an
