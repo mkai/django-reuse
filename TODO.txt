@@ -1,0 +1,1 @@
+E-Mail auth backend: evaluate http://www.micahcarrick.com/django-email-authentication.html
