@@ -4,6 +4,12 @@ def app_name(request):
     return { 'APP_NAME': settings.APP_NAME }
 
 
+def app_slogan(request):
+    from django.conf import settings
+
+    return { 'APP_SLOGAN': settings.APP_SLOGAN }
+
+
 def google_analytics_id(request):
     from django.conf import settings
     
