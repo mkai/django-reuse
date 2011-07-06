@@ -1,6 +1,8 @@
 # source: http://djangosnippets.org/snippets/10/
 from django import template
 
+register = template.Library()
+
 class CatchNode(template.Node):
     def __init__(self, nodelist, var_name):
         self.nodelist = nodelist
