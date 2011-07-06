@@ -1,6 +1,6 @@
 """
 @author: chris http://djangosnippets.org/snippets/1845/
-updated to 1.3 by Łukasz Kidziński
+updated to 1.3 by Lukasz Kidzinski
 source: http://djangosnippets.org/snippets/2463/
 """
 from django.contrib.auth.models import User
