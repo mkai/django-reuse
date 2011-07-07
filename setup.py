@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='django-reuse',
-      version='0.25',
+      version='0.26',
       description="General Django adjustments/ utilities library",
       long_description="",
       author='Markus Kaiserswerth',
@@ -9,5 +9,5 @@ setup(name='django-reuse',
       license='GPL',
       packages=['reuse'],
       zip_safe=False,
-      install_requires=['django'],
+      install_requires=['django', 'jsmin'],
 )
