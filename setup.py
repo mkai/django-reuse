@@ -9,5 +9,5 @@ setup(name='django-reuse',
       license='GPL',
       packages=['reuse'],
       zip_safe=False,
-      install_requires=['django', 'jsmin'],
+      install_requires=['django'],
 )

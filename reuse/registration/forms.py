@@ -16,8 +16,8 @@ class EmailAddressTermsOfServiceRegistrationForm(RegistrationFormUniqueEmail):
 
     # add TOS field
     tos = forms.BooleanField(widget=forms.CheckboxInput(),
-                             label=_(u'I have read and agree to the Terms of Service'),
-                             error_messages={'required': _("You must agree to the terms to register")})
+                             label=_(u'I have read and agree to the Terms of Service.'),
+                             error_messages={'required': _("You must agree to the terms to register.")})
 
     def clean_username(self):
         "This function is required to overwrite an inherited username clean"
