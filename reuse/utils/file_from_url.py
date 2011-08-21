@@ -14,7 +14,7 @@ def file_from_url(url):
         temp_file.write(request.read())
         temp_file.flush()
 
-        file_name = os.path.basename(request.geturl())                
+        file_name = urllib2.unquote(os.path.basename(request.geturl()))
         file_instance = File(temp_file)
         
         return file_name, file_instance
