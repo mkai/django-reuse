@@ -217,8 +217,8 @@ class SFTPStorage(Storage):
             if attr.attr == {}:
                 return False
             return True
-        except IOError as (code, strerror):
-            if (code == errno.ENOENT):
+        except IOError, e:
+            if (e.code == errno.ENOENT):
                 return False
         except SFTPError, e:
             raise SFTPStorageException('Error when testing existence of %s' % name)
