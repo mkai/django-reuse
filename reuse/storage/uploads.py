@@ -29,7 +29,7 @@ class SSFTPStorageException(Exception): pass
 class SFTPStorage(Storage):
     """SFTP Storage class for Django pluggable storage system."""
 
-    def __init__(self, location=settings.FTP_STORAGE_LOCATION, base_url=settings.MEDIA_URL, key=None):
+    def __init__(self, location=getattr(settings, 'FTP_STORAGE_LOCATION', ''), base_url=settings.MEDIA_URL, key=None):
         self._config = self._decode_location(location)
         self._config['key'] = key
         self._base_url = base_url
