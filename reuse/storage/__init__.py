@@ -1,1 +1,2 @@
-from param_cache import *
+from uploads import *
+from staticfiles import *
