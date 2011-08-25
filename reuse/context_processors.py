@@ -1,9 +1,13 @@
-def settings(request):
-    from django.conf import settings
-    
+from django.conf import settings as app_settings
+
+TEMPLATE_EXPOSED_SETTINGS = getattr(app_settings, 'TEMPLATE_EXPOSED_SETTINGS', [
+    'DEBUG',
+])
+
+def settings(request):    
     values = {}
-    for setting in settings.TEMPLATE_EXPOSED_SETTINGS:
-        values[setting] = getattr(settings, setting)
+    for key in TEMPLATE_EXPOSED_SETTINGS:
+        values[key] = getattr(app_settings, key)
     
     return { 'settings': values }
    
