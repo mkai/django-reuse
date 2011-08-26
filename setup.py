@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='django-reuse',
-      version='0.36',
+      version='0.37',
       description="General Django utilities library",
       long_description="",
       author='Markus Kaiserswerth',
