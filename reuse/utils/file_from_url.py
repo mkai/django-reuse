@@ -3,10 +3,12 @@ from django.core.files.temp import NamedTemporaryFile
 import urllib2
 import os
 
-"""
 
-"""
 def file_from_url(url):
+    """
+    Returns a file object from the data downloaded from the given URL.
+
+    """
     try:        
         request = urllib2.urlopen(url)
         
@@ -18,5 +20,5 @@ def file_from_url(url):
         file_instance = File(temp_file)
         
         return file_name, file_instance
-    except Exception:
-        raise
+    except:
+        return None

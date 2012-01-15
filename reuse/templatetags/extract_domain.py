@@ -3,8 +3,13 @@ from django.template.defaultfilters import stringfilter
 
 register = template.Library()
 
+
 @register.filter
 @stringfilter
-def domain_name(url, strip_extra = ''):
-    return url.replace('http://', '').replace('https://', '').partition('/')[0].replace(strip_extra, '')
-
+def domain_name(url, strip_extra=''):
+    domain = url.replace('http://', '')
+    domain = domain.replace('https://', '')
+    domain = domain.partition('/')[0]
+    if strip_extra:
+        domain = domain.replace(strip_extra, '')
+    return domain

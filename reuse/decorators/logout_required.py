@@ -1,7 +1,7 @@
 from functools import wraps
-from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.decorators import available_attrs
+
 
 def logout_required(function=None, redirect_url=None):
     """

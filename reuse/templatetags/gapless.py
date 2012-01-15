@@ -7,10 +7,12 @@ from django.template import Node, Library
 
 register = Library()
 
+
 def strip_empty_lines(value):
     """Return the given HTML with empty and all-whitespace lines removed."""
     return re.sub(r'\n[ \t]*(?=\n)', '', force_unicode(value))
 strip_empty_lines = allow_lazy(strip_empty_lines, unicode)
+
 
 class GaplessNode(Node):
     def __init__(self, nodelist):
@@ -18,6 +20,7 @@ class GaplessNode(Node):
 
     def render(self, context):
         return strip_empty_lines(self.nodelist.render(context).strip())
+
 
 def gapless(parser, token):
     """

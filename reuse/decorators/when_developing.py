@@ -1,3 +1,6 @@
+from django.conf import settings
+
+
 def when_developing(view):
     """
     Usage:
@@ -7,9 +10,6 @@ def when_developing(view):
         User.objects.all().delete()
         return HttpResponse('Successfully deleted all users.')
     """
-
-    from django.conf import settings
-
     def f404(*args, **kwargs):
         from django.http import Http404
         raise Http404

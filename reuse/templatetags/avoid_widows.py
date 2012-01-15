@@ -1,9 +1,9 @@
 # Avoid widows using a template filter
 # http://djangosnippets.org/snippets/17/
-
-from django.template import Library, Node
+from django.template import Library
 
 register = Library()
+
 
 def widont(value):
     bits = value.rsplit(' ', 1)

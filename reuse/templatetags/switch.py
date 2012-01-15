@@ -34,7 +34,8 @@ def do_switch(parser, token):
     bits = token.contents.split()
     tag_name = bits[0]
     if len(bits) != 2:
-        raise template.TemplateSyntaxError("'%s' tag requires one argument" % tag_name)
+        raise template.TemplateSyntaxError(
+            "'%s' tag requires one argument" % tag_name)
     variable = parser.compile_filter(bits[1])
 
     class BlockTagList(object):
@@ -42,6 +43,7 @@ def do_switch(parser, token):
         # of Parser.parse() relating to the "parse_until" argument.
         def __init__(self, *names):
             self.names = set(names)
+            
         def __contains__(self, token_contents):
             name = token_contents.split()[0]
             return name in self.names
@@ -57,7 +59,8 @@ def do_switch(parser, token):
         nodelist = parser.parse(BlockTagList('case', 'else', 'endswitch'))
         
         if got_else:
-            raise template.TemplateSyntaxError("'else' must be last tag in '%s'." % tag_name)
+            raise template.TemplateSyntaxError(
+                "'else' must be last tag in '%s'." % tag_name)
 
         contents = token.contents.split()
         token_name, token_args = contents[0], contents[1:]
@@ -74,9 +77,11 @@ def do_switch(parser, token):
         token = parser.next_token()
 
     if not got_case:
-        raise template.TemplateSyntaxError("'%s' must have at least one 'case'." % tag_name)
-
+        raise template.TemplateSyntaxError(
+            "'%s' must have at least one 'case'." % tag_name)
+            
     return SwitchNode(variable, cases)
+
 
 class SwitchNode(Node):
     def __init__(self, variable, cases):
@@ -104,7 +109,6 @@ class SwitchNode(Node):
             value_missing = False
             value = self.variable.resolve(context, True)
         except VariableDoesNotExist:
-            no_value = True
             value_missing = None
         
         for tests, nodelist in self.cases:
@@ -117,4 +121,3 @@ class SwitchNode(Node):
                         return nodelist.render(context)
         else:
             return ""
-

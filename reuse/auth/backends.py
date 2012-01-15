@@ -6,6 +6,7 @@ source: http://djangosnippets.org/snippets/2463/
 from django.contrib.auth.models import User
 from django.core.validators import email_re
 
+
 class EmailBackend:
     """
     Authenticate with e-mail.
