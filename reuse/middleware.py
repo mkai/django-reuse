@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.conf import settings
+import re
 
 
 class HTTPBasicAuthMiddleware(object):
@@ -39,3 +40,20 @@ class HTTPBasicAuthMiddleware(object):
             if username == settings.BASIC_AUTH_USERNAME and password == settings.BASIC_AUTH_PASSWORD:
                 return None            
             return self.unauthed()
+
+
+class StripWhitespaceMiddleware(object):
+    """
+    Strips leading and trailing whitespace from an HTML response's content.
+
+    From: https://bitbucket.org/zalew/django-annoying
+
+    """
+    def __init__(self):
+        self.whitespace = re.compile('\s*\n')
+
+    def process_response(self, request, response):
+        if 'text/html' in response['Content-Type'].lower():
+            new_content = self.whitespace.sub('\n', response.content)
+            response.content = new_content
+        return response 
