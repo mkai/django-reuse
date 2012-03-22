@@ -40,6 +40,23 @@ class CustomDateRangeFilter(DateRangeFilter):
         return self.options[value][1](qs, self.name)
 
 
+class ExclusiveMultipleChoiceFilter(MultipleChoiceFilter):
+    """
+    A filter for ``django_filters`` that performs an AND query on the selected 
+    options.
+
+    """
+    def filter(self, qs, values):
+        values = values or ()
+        # TODO: this is a bit of a hack, but ModelChoiceIterator doesn't have a
+        # __len__ method
+        if len(values) == len(list(self.field.choices)):
+            return qs
+        for value in values:
+            qs = qs.filter(**{'%s__%s' % (self.name, self.lookup_type): value})
+        return qs
+
+
 class OptionalMultipleChoiceFilter(MultipleChoiceFilter):
     """
     A filter for ``django_filters`` that doesn't filter the queryset if the 
