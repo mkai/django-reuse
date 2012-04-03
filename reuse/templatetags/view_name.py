@@ -37,6 +37,10 @@ def _resolver_resolve_to_name(self, path):
     if match:
         new_path = path[match.end():]
         for pattern in self.url_patterns:
+            if not isinstance(pattern, RegexURLPattern):
+                # ignore RegexURLResolver instances matched by an URL like ''
+                # (e. g. when an include() is used in the URLconf).
+                continue
             try:
                 name = _pattern_resolve_to_name(pattern, new_path)
             except Resolver404, e:
