@@ -18,7 +18,7 @@ class LightCommentForm(CommentForm):
             content_type=ContentType.objects.get_for_model(self.target_object),
             object_pk=force_unicode(self.target_object._get_pk_val()),
             comment=self.cleaned_data["comment"],
-            submit_date=now,
+            submit_date=now(),
             site_id=settings.SITE_ID,
             is_public=True,
             is_removed=False,
