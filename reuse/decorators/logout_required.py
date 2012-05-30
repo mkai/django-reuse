@@ -15,7 +15,7 @@ def logout_required(function=None, redirect_url=None):
             else:
                 if redirect_url:
                     return HttpResponseRedirect(redirect_url)
-                return HttpResponse('You need to be logged out to do this.')
+                return HttpResponse(u'You need to be logged out to do this.')
         return _wrapped_view
     if function:
         return decorator(function)
