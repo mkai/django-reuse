@@ -25,6 +25,6 @@ class MultipleEmailField(CharField):
             if not email.strip():
                 continue  # skip empty "addresses"
             if not email_re.match(email):
-                error_msg = _('%s is not a valid e-mail address.') % email
+                error_msg = _(u'%s is not a valid e-mail address.') % email
                 raise ValidationError(error_msg)
         return emails

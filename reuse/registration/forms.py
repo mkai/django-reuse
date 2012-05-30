@@ -21,7 +21,7 @@ class EmailAddressTermsOfServiceRegistrationForm(RegistrationFormUniqueEmail):
     tos = forms.BooleanField(widget=forms.CheckboxInput(), 
         label=_(u'I have read and agree to the Terms of Service.'),
         error_messages={
-            'required': _("You must agree to the terms to register.")
+            'required': _(u'You must agree to the terms to register.')
         })
 
     def clean_username(self):
