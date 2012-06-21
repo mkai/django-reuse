@@ -108,6 +108,8 @@ class MalformedQueryStringMiddleware(object):
     """
     def process_request(self, request):
         if '&' in request.path:  # '&' left over from a malformed query string
-            url = '%s&%s' % (request.path.replace('&', '?', 1),
-                             request.META['QUERY_STRING'])
+            url = request.path.replace('&', '?', 1)
+            if request.META.get('QUERY_STRING', ''):
+                # append regular query string
+                url += '&' + request.META['QUERY_STRING']
             return HttpResponsePermanentRedirect(url)
