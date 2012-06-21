@@ -94,3 +94,20 @@ class StripWhitespaceMiddleware(object):
             new_content = self.whitespace.sub('\n', response.content)
             response.content = new_content
         return response 
+
+
+class MalformedQueryStringMiddleware(object):
+    """
+    Detects a malformed query string and redirects to a sanitized version of 
+    the requested URL.
+
+    Put it before CommonMiddleware in MIDDLEWARE_CLASSES.
+
+    Example: redirect http://site.com/&a=x&b=y to http://site.com/?a=x&b=y
+
+    """
+    def process_request(self, request):
+        if '&' in request.path:  # '&' left over from a malformed query string
+            url = '%s&%s' % (request.path.replace('&', '?', 1),
+                             request.META['QUERY_STRING'])
+            return HttpResponsePermanentRedirect(url)
