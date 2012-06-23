@@ -1,7 +1,7 @@
-import re
-from django.contrib.sites.models import Site
-from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.conf import settings
+from django.http import HttpResponse, HttpResponsePermanentRedirect
+from django.utils.html import strip_spaces_between_tags as strip_tag_spaces
+from django.contrib.sites.models import Site
 
 
 class HTTPBasicAuthMiddleware(object):
@@ -81,20 +81,14 @@ class DefaultSiteRedirectMiddleware(object):
 
 class StripWhitespaceMiddleware(object):
     """
-    Strips leading and trailing whitespace from an HTML response's content.
+    Strips whitespace from an HTML response's content.
 
-    From:
-      - bitbucket.org/zalew/django-annoying
-      - code.djangoproject.com/attachment/wiki/ContributedMiddleware/StripWhitespaceMiddleware.py
+    From: http://justcramer.com/2008/12/01/spaceless-html-in-django/
 
     """
-    def __init__(self):
-        self.whitespace = re.compile('\s*\n+\s*')
-
     def process_response(self, request, response):
         if 'text/html' in response['Content-Type'].lower():
-            new_content = self.whitespace.sub('', response.content)
-            response.content = new_content
+            response.content = strip_tag_spaces(response.content.strip())
         return response 
 
 
