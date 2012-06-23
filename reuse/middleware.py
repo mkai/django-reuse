@@ -83,15 +83,17 @@ class StripWhitespaceMiddleware(object):
     """
     Strips leading and trailing whitespace from an HTML response's content.
 
-    From: https://bitbucket.org/zalew/django-annoying
+    From:
+      - bitbucket.org/zalew/django-annoying
+      - code.djangoproject.com/attachment/wiki/ContributedMiddleware/StripWhitespaceMiddleware.py
 
     """
     def __init__(self):
-        self.whitespace = re.compile('\s*\n')
+        self.whitespace = re.compile('\s*\n+\s*')
 
     def process_response(self, request, response):
         if 'text/html' in response['Content-Type'].lower():
-            new_content = self.whitespace.sub('\n', response.content)
+            new_content = self.whitespace.sub('', response.content)
             response.content = new_content
         return response 
 
