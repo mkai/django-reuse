@@ -58,4 +58,7 @@ def resolve_to_name(path, urlconf=None):
     if isinstance(r, RegexURLPattern):
         return _pattern_resolve_to_name(r, path)
     else:
-        return _resolver_resolve_to_name(r, path)
+        try:
+            return _resolver_resolve_to_name(r, path)
+        except Resolver404:
+            return None
