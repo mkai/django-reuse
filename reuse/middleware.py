@@ -2,6 +2,8 @@ from django.conf import settings
 from django.http import HttpResponse, HttpResponsePermanentRedirect
 from django.utils.html import strip_spaces_between_tags as strip_tag_spaces
 from django.contrib.sites.models import Site
+from django.contrib.redirects.models import Redirect
+import re
 
 
 class HTTPBasicAuthMiddleware(object):
@@ -109,3 +111,35 @@ class MalformedQueryStringMiddleware(object):
                 # append regular query string
                 url += '&' + request.META['QUERY_STRING']
             return HttpResponsePermanentRedirect(url)
+
+
+class RegExRedirectFallbackMiddleware(object):
+    """
+    Simple middleware to complement the built in redirect middleware app.
+    Add this after the contrib.redirect middleware - this will be fired if
+    a 404 is triggered and the contrib.redirect fails to find a suitable
+    redirect.
+
+    Useful if you want to add the redirects into the DB - and/or don't have
+    access to the .htaccess script or whatever HTTP server based redirect
+    machinery your site runs off.
+
+    From: http://djangosnippets.org/snippets/2784/
+
+    """
+    def process_response(self, request, response):
+        if response.status_code != 404:
+            return response  # no need to check for a redirect for non-404 responses.
+        path = request.get_full_path()
+        redirects = Redirect.objects.filter(site__id__exact=settings.SITE_ID)
+        for r in redirects:
+            try:
+                old_path = re.compile(r.old_path, re.IGNORECASE)
+            except re.error:
+                # old_path does not compile into regex, ignore it and move on to the next one
+                continue
+            if re.match(r.old_path, path):
+                new_path = r.new_path.replace('$', '\\')
+                replaced_path = re.sub(old_path, new_path, path)
+                return HttpResponsePermanentRedirect(replaced_path)
+        return response
