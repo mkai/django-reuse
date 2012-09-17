@@ -6,8 +6,8 @@ from django.contrib.sites.models import Site
 
 class HTTPBasicAuthMiddleware(object):
     """
-    A very basic Basic Auth middleware that uses a username/password defined 
-    in your settings.py as BASIC_AUTH_USERNAME and BASIC_AUTH_PASSWORD. 
+    A very basic Basic Auth middleware that uses a username/password defined
+    in your settings.py as BASIC_AUTH_USERNAME and BASIC_AUTH_PASSWORD.
     Does not use Django auth. Handy for quickly securing an entire site during
     development, for example.
 
@@ -30,7 +30,7 @@ class HTTPBasicAuthMiddleware(object):
         response['WWW-Authenticate'] = 'Basic realm="Development"'
         response.status_code = 401
         return response
-    
+
     def process_request(self, request):
         if not 'HTTP_AUTHORIZATION' in request.META:
             return self.unauthed()
@@ -42,19 +42,19 @@ class HTTPBasicAuthMiddleware(object):
             auth = auth.strip().decode('base64')
             username, password = auth.split(':', 1)
             if username == settings.BASIC_AUTH_USERNAME and password == settings.BASIC_AUTH_PASSWORD:
-                return None            
+                return None
             return self.unauthed()
 
 
 class DefaultSiteRedirectMiddleware(object):
     """
-    Redirects all requests to a common domain, e. g.: 
+    Redirects all requests to a common domain, e. g.:
         example.com -> www.example.com
         example.net -> www.example.com
         www.example.de -> www.example.com
 
     The common domain can be specified in a Django setting named SITE_DOMAIN.
-    If SITE_DOMAIN is not set, the domain of the default Site (as in 
+    If SITE_DOMAIN is not set, the domain of the default Site (as in
     django.contrib.sites) is used.
 
     Doesn't do anything during development, i. e. if DEBUG is set to True.
@@ -89,12 +89,12 @@ class StripWhitespaceMiddleware(object):
     def process_response(self, request, response):
         if 'text/html' in response['Content-Type'].lower():
             response.content = strip_tag_spaces(response.content.strip())
-        return response 
+        return response
 
 
 class MalformedQueryStringMiddleware(object):
     """
-    Detects a malformed query string and redirects to a sanitized version of 
+    Detects a malformed query string and redirects to a sanitized version of
     the requested URL.
 
     Put it before CommonMiddleware in MIDDLEWARE_CLASSES.
