@@ -1,13 +1,13 @@
 # Adapted from:
 # https://github.com/omab/django-social-auth/issues/46#issuecomment-3331082
-import urllib
-import urllib2
 from django.template.defaultfilters import slugify
 from django.conf import settings
-from django.utils import simplejson as json
 from social_auth.backends import USERNAME
 from social_auth.backends.google import (BACKENDS, GoogleOAuth2,
                                         GoogleOAuth2Backend)
+import urllib
+import urllib2
+import json
 
 
 class GoogleProfileBackend(GoogleOAuth2Backend):

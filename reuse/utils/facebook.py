@@ -1,7 +1,7 @@
-from django.utils import simplejson as json
 import httplib
 import urllib
 import urllib2
+import json
 
 FACEBOOK_GRAPH_API_URL = 'https://graph.facebook.com'
 
@@ -21,7 +21,7 @@ def facebook_request(relative_url, access_token):
     except (httplib.HTTPException, urllib2.HTTPError, urllib2.URLError), e:
         if e.code == 400:  # OAuth token invalid
             raise ValueError(e)
-    
+
     # TODO: do error handling in the exception handler, not here
     response = json.loads(data)
     error = response.get('error')
@@ -35,7 +35,7 @@ def facebook_request(relative_url, access_token):
 
 def facebook_batch_request(requests, access_token):
     """
-    Loads multiple sets of data from the Facebook Graph API in a single, 
+    Loads multiple sets of data from the Facebook Graph API in a single,
     batched request.
 
     Raises ValueError if the specified OAuth access token has become invalid.
@@ -43,7 +43,7 @@ def facebook_batch_request(requests, access_token):
     """
     if not requests:
         return []
-    
+
     url = '%s/?access_token=%s' % (FACEBOOK_GRAPH_API_URL, access_token)
     payload = urllib.urlencode({'batch': json.dumps(requests), })
     try:
