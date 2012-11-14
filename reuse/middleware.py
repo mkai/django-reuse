@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.http import (HttpResponse, HttpResponseRedirect,
                          HttpResponsePermanentRedirect)
-from django.utils.html import strip_spaces_between_tags as strip_tag_spaces
+from django.utils.html import strip_spaces_between_tags
 from django.contrib.sites.models import Site
 from django.contrib.redirects.models import Redirect
 import re
@@ -118,8 +118,8 @@ class StripWhitespaceMiddleware(object):
 
     """
     def process_response(self, request, response):
-        if 'text/html' in response['Content-Type'].lower():
-            response.content = strip_tag_spaces(response.content.strip())
+        if 'text/html' in response.get('Content-Type', '').lower():
+            response.content = strip_spaces_between_tags(response.content.strip())
         return response
 
 
