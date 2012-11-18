@@ -5,7 +5,9 @@ from django.utils.decorators import available_attrs
 
 def logout_required(function=None, redirect_url=None):
     """
-    
+    Requires a logged-out user to view a URL, otherwise redirects the user to
+    to the given *redirect_url*.
+
     """
     def decorator(view_func):
         @wraps(view_func, assigned=available_attrs(view_func))
