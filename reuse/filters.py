@@ -3,13 +3,13 @@ from django.utils.translation import ugettext_lazy as _
 from django_filters import CharFilter, DateRangeFilter, MultipleChoiceFilter
 
 
-class CustomDateRangeFilter(DateRangeFilter): 
+class CustomDateRangeFilter(DateRangeFilter):
     """
     A filter for ``django_filters`` that keeps only objects created in the past
     n days rather than objects in the last week (the original
     ``DateRangeFilter`` would potentially return 0 items on a Monday).
-    
-    """   
+
+    """
     options = {
         '': (_('Any Date'), lambda qs, name: qs.all()),
         'today': (_('Today'), lambda qs, name: qs.filter(**{
@@ -33,7 +33,7 @@ class CustomDateRangeFilter(DateRangeFilter):
             '%s__year' % name: datetime.today().year,
         })),
     }
-    
+
     def filter(self, qs, value):
         if value not in self.options.keys():
             value = ''
@@ -42,7 +42,7 @@ class CustomDateRangeFilter(DateRangeFilter):
 
 class ExclusiveMultipleChoiceFilter(MultipleChoiceFilter):
     """
-    A filter for ``django_filters`` that performs an AND query on the selected 
+    A filter for ``django_filters`` that performs an AND query on the selected
     options.
 
     """
@@ -59,9 +59,9 @@ class ExclusiveMultipleChoiceFilter(MultipleChoiceFilter):
 
 class OptionalMultipleChoiceFilter(MultipleChoiceFilter):
     """
-    A filter for ``django_filters`` that doesn't filter the queryset if the 
+    A filter for ``django_filters`` that doesn't filter the queryset if the
     value is an empty string.
-    
+
     """
     def filter(self, qs, value):
         value = value or ()
@@ -72,10 +72,10 @@ class OptionalMultipleChoiceFilter(MultipleChoiceFilter):
 
 class ExcludingCharFilter(CharFilter):
     """
-    A filter for ``django_filters`` that allows for excluding objects 
-    containing specific keywords that start with a minus (e. g. in a search: 
+    A filter for ``django_filters`` that allows for excluding objects
+    containing specific keywords that start with a minus (e. g. in a search:
     "sweets -cookies" would return sweets, but not cookies).
-    
+
     """
     def filter(self, qs, value):
         words = value.split(' ')

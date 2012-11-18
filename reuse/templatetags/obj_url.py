@@ -7,7 +7,7 @@ register = template.Library()
 @register.assignment_tag
 def obj_url(obj, url_format):
     """
-    Returns a reversed URL from a given object's attribute value and other URL 
+    Returns a reversed URL from a given object's attribute value and other URL
     arguments given in a format string.
 
     This makes it possible to reuse template snippets, e. g. a list of tags in
@@ -24,14 +24,14 @@ def obj_url(obj, url_format):
 
     Usage:
         {% obj_url tag "book_list/<slug>/" %}
-    
+
     """
     # separate url name and arguments, remove empty strings
     pieces = [p for p in url_format.split('/') if p.strip()]
     url_name, args = pieces.pop(0), pieces
 
     # get dynamic args ('<attr>') from the object
-    resolve_attrs = (lambda a: a if not a.startswith('<') 
+    resolve_attrs = (lambda a: a if not a.startswith('<')
                                else getattr(obj, a.strip('<>')))
     args = map(resolve_attrs, args)
     return reverse(url_name, args=args)
