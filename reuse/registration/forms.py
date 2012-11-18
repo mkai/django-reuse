@@ -6,19 +6,19 @@ from registration.forms import RegistrationFormUniqueEmail
 
 class EmailAddressTermsOfServiceRegistrationForm(RegistrationFormUniqueEmail):
     """
-    A registration form that only requires the user to enter their e-mail 
+    A registration form that only requires the user to enter their e-mail
     address and password. The username is automatically generated
-    This class requires django-registration to extend the 
+    This class requires django-registration to extend the
     RegistrationFormUniqueEmail
-    
+
     Source: http://djangosnippets.org/snippets/686/
-    
-    """ 
+
+    """
     # add hidden username field
     username = forms.CharField(widget=forms.HiddenInput, required=False)
 
     # add TOS field
-    tos = forms.BooleanField(widget=forms.CheckboxInput(), 
+    tos = forms.BooleanField(widget=forms.CheckboxInput(),
         label=_(u'I have read and agree to the Terms of Service.'),
         error_messages={
             'required': _(u'You must agree to the terms to register.')

@@ -43,7 +43,7 @@ def do_switch(parser, token):
         # of Parser.parse() relating to the "parse_until" argument.
         def __init__(self, *names):
             self.names = set(names)
-            
+
         def __contains__(self, token_contents):
             name = token_contents.split()[0]
             return name in self.names
@@ -57,14 +57,14 @@ def do_switch(parser, token):
     got_else = False
     while token.contents != 'endswitch':
         nodelist = parser.parse(BlockTagList('case', 'else', 'endswitch'))
-        
+
         if got_else:
             raise template.TemplateSyntaxError(
                 "'else' must be last tag in '%s'." % tag_name)
 
         contents = token.contents.split()
         token_name, token_args = contents[0], contents[1:]
-        
+
         if token_name == 'case':
             tests = map(parser.compile_filter, token_args)
             case = (tests, nodelist)
@@ -79,7 +79,7 @@ def do_switch(parser, token):
     if not got_case:
         raise template.TemplateSyntaxError(
             "'%s' must have at least one 'case'." % tag_name)
-            
+
     return SwitchNode(variable, cases)
 
 
@@ -110,7 +110,7 @@ class SwitchNode(Node):
             value = self.variable.resolve(context, True)
         except VariableDoesNotExist:
             value_missing = None
-        
+
         for tests, nodelist in self.cases:
             if tests is None:
                 return nodelist.render(context)

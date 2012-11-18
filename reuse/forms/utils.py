@@ -5,7 +5,7 @@ from django.forms.util import ErrorDict
 def add_form_error(form, message, field=None):
     """
     Utility function to manually inject an error into a form.
-    
+
     """
     if field:  # set a specific field's error
         form._errors[field] = form.error_class([message])

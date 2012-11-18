@@ -11,8 +11,8 @@ class EmailBackend(object):
     """
     Authenticate with e-mail.
 
-    Use the  e-mail, and password
-    
+    Use the e-mail, and password
+
     Should work with django 1.3
     """
 

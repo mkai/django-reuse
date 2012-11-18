@@ -2,7 +2,7 @@
 # doesn't require a username string, an email address or URL to be given.
 #
 # Comment ownership can be determined from the user_id field.
-# 
+#
 # From:
 # http://blog.jvc26.org/2011/07/31/django-remove-excess-comment-fields
 

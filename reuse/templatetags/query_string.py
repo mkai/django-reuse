@@ -18,7 +18,7 @@ def query_string(parser, token):
         modifier is <name><op><value> where op in {=, +, -}
 
     Parameters:
-        - base_querystring: literal query string, e.g. 
+        - base_querystring: literal query string, e.g.
                             '?tag=python&tag=django&year=2011',
                             or context variable bound to either
                             - a literal query string,
@@ -32,10 +32,10 @@ def query_string(parser, token):
                            = replace all existing values of name with value(s)
                            + add value(s) to existing values for name
                            - remove value(s) from existing values if present
-                           value is either a literal parameter value 
+                           value is either a literal parameter value
                              or a context variable. If it is a context variable
                              it may also be bound to a list.
-        - as <var name>: bind result to context variable instead of injecting 
+        - as <var name>: bind result to context variable instead of injecting
                          in output (same as in url tag).
 
     Examples:
@@ -81,7 +81,7 @@ class QueryStringNode(Node):
         self.qdict = qdict
         self.mods = mods
         self.asvar = asvar
-        
+
     def render(self, context):
         mods = [(smart_str(k, 'ascii'), op, v.resolve(context))
                 for k, op, v in self.mods]
@@ -93,7 +93,7 @@ class QueryStringNode(Node):
         qdict = self._get_initial_query_dict(qdict)
         #assert isinstance(qdict, QueryDict)
         for k, op, v in mods:
-            qdict.setlist(k, self._process_list(qdict.getlist(k), op, v))                   
+            qdict.setlist(k, self._process_list(qdict.getlist(k), op, v))
         qstring = qdict.urlencode()
         if qstring:
             qstring = '?' + qstring
@@ -102,7 +102,7 @@ class QueryStringNode(Node):
             return ''
         else:
             return qstring
-            
+
     def _get_initial_query_dict(self, qdict):
         if not qdict:
             qdict = QueryDict(None, mutable=True)
@@ -122,7 +122,7 @@ class QueryStringNode(Node):
             # Enter each pair into QueryDict object:
             try:
                 for k, v in pairs:
-                    # Convert values to unicode so that detecting 
+                    # Convert values to unicode so that detecting
                     # membership works for numbers.
                     if isinstance(v, (list, tuple)):
                         for e in v:
@@ -133,7 +133,7 @@ class QueryStringNode(Node):
                 # Wrong data structure, qdict remains empty.
                 pass
         return qdict
-        
+
     def _process_list(self, current_list, op, val):
         if not val:
             if op == '=':

@@ -20,11 +20,11 @@ def prefetch_related(qs):
     qs = qs._clone()
 
     gfk_fields = [g for g in qs.model._meta.virtual_fields if isinstance(g, GenericForeignKey)]
-    
+
     ct_map = {}
     item_map = {}
     data_map = {}
-    
+
     for item in qs:
         for gfk in gfk_fields:
             ct_id_field = qs.model._meta.get_field(gfk.ct_field).column

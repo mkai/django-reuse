@@ -3,16 +3,16 @@ from django.core.validators import email_re
 from django.forms import CharField, Textarea, ValidationError
 from django.utils.translation import ugettext as _
 
-email_separator_re = re.compile(r'[^\w\.\-\+@_]+')     
+email_separator_re = re.compile(r'[^\w\.\-\+@_]+')
 
 
 class MultipleEmailField(CharField):
     """
     A form field that validates a textarea containing multiple email addresses
     separated by commas or newlines.
-    
+
     Adapted from: http://djangosnippets.org/snippets/1958/
-    
+
     """
     widget = Textarea
 
