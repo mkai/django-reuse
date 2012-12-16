@@ -11,8 +11,8 @@ def replace(value, args):
 
     {% load replace %} {{ mystring|replace:"/l(u+)pin/m\1gen" }}
 
-    If: mystring = 'lupin, luuuuuupin, and luuuuuuuuuuuuupin are lè pwn'
-    then it will return: mugen, muuuuuugen, and muuuuuuuuuuuuugen are lè pwn
+    If: mystring = 'lupin, luuuuuupin, and luuuuuuuuuuuuupin are le pwn'
+    then it will return: mugen, muuuuuugen, and muuuuuuuuuuuuugen are le pwn
 
     The argument is in the following format:
 
