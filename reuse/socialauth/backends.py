@@ -2,9 +2,8 @@
 # https://github.com/omab/django-social-auth/issues/46#issuecomment-3331082
 from django.template.defaultfilters import slugify
 from django.conf import settings
-from social_auth.backends import USERNAME
 from social_auth.backends.google import (BACKENDS, GoogleOAuth2,
-                                        GoogleOAuth2Backend)
+                                         GoogleOAuth2Backend)
 import urllib
 import urllib2
 import json
@@ -38,13 +37,13 @@ class GoogleProfileBackend(GoogleOAuth2Backend):
             username = slugify(response['name'])
 
         return {
-                'id': response['id'],
-                USERNAME: username,
-                'email': email,
-                'fullname': response.get('name', ''),
-                'first_name': response.get('given_name', ''),
-                'last_name': response.get('family_name', ''),
-                'gender': response.get('gender', '')
+            'id': response['id'],
+            'username': username,
+            'email': email,
+            'fullname': response.get('name', ''),
+            'first_name': response.get('given_name', ''),
+            'last_name': response.get('family_name', ''),
+            'gender': response.get('gender', '')
         }
 
 
@@ -62,11 +61,8 @@ class GoogleProfile(GoogleOAuth2):
         ]
         return scope + getattr(settings, 'GOOGLE_OAUTH_EXTRA_SCOPE', [])
 
-    def user_data(self, access_token):
-        """
-        Return user data from Google API
-
-        """
+    def user_data(self, access_token, *args, **kwargs):
+        """Return user data from Google API."""
         return self.googleapis_profile(
             'https://www.googleapis.com/oauth2/v1/userinfo', access_token)
 
