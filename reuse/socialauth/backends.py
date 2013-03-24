@@ -1,12 +1,12 @@
 # Adapted from:
 # https://github.com/omab/django-social-auth/issues/46#issuecomment-3331082
+import json
+import urllib
+import urllib2
 from django.template.defaultfilters import slugify
 from django.conf import settings
 from social_auth.backends.google import (BACKENDS, GoogleOAuth2,
                                          GoogleOAuth2Backend)
-import urllib
-import urllib2
-import json
 
 
 class GoogleProfileBackend(GoogleOAuth2Backend):
@@ -43,7 +43,7 @@ class GoogleProfileBackend(GoogleOAuth2Backend):
             'fullname': response.get('name', ''),
             'first_name': response.get('given_name', ''),
             'last_name': response.get('family_name', ''),
-            'gender': response.get('gender', '')
+            'gender': response.get('gender', ''),
         }
 
 
