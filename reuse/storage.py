@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.contrib.staticfiles.storage import StaticFilesStorage
-from storages.backends.sftpstorage import SFTPStorage
 
 
 CACHE_PARAM = getattr(settings, 'STATICFILES_CACHE_PARAM', '?v=1')
@@ -21,15 +20,24 @@ class ParameterCachedStaticFilesStorage(StaticFilesStorage):
         return url + CACHE_PARAM
 
 
-class HTTPSFTPStorage(SFTPStorage):
-    """
-    A storage backend that uploads files to an FTP server and references them
-    under the URL accessible by an HTTP server.
 
-    The HTTP URL must be given as SFTP_STORAGE_HTTP_ROOT in settings.
 
     """
-    base_url = settings.SFTP_STORAGE_HTTP_ROOT
 
-    def url(self, name):
-        return self.base_url + name
+try:
+    from storages.backends.sftpstorage import SFTPStorage
+except ImportError:
+    pass
+else:
+    class HTTPSFTPStorage(SFTPStorage):
+        """
+        A storage backend that uploads files to an FTP server and references
+        them under the URL accessible by an HTTP server.
+
+        The HTTP URL must be given as SFTP_STORAGE_HTTP_ROOT in settings.
+
+        """
+        base_url = settings.SFTP_STORAGE_HTTP_ROOT
+
+        def url(self, name):
+            return self.base_url + name
