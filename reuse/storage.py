@@ -2,9 +2,6 @@ from django.conf import settings
 from django.contrib.staticfiles.storage import StaticFilesStorage
 
 
-CACHE_PARAM = getattr(settings, 'STATICFILES_CACHE_PARAM', '?v=1')
-
-
 class ParameterCachedStaticFilesStorage(StaticFilesStorage):
     """
     A static files storage backend that appends a static parameter to the
@@ -15,9 +12,12 @@ class ParameterCachedStaticFilesStorage(StaticFilesStorage):
     from the browser cache and will be redownloaded.
 
     """
+    cache_param = getattr(settings, 'STATICFILES_CACHE_PARAM', '?v=1')
+
     def url(self, name):
         url = super(ParameterCachedStaticFilesStorage, self).url(name)
-        return url + CACHE_PARAM
+        return url + self.cache_param
+
 
 
 
