@@ -1,10 +1,10 @@
+import re
 from django.conf import settings
 from django.http import (HttpResponse, HttpResponseRedirect,
                          HttpResponsePermanentRedirect)
 from django.utils.html import strip_spaces_between_tags
-from django.contrib.sites.models import Site
+from django.contrib.sites.models import get_current_site
 from django.contrib.redirects.models import Redirect
-import re
 
 
 class HTTPBasicAuthMiddleware(object):
@@ -66,13 +66,11 @@ class DefaultSiteRedirectMiddleware(object):
 
     """
     def process_request(self, request):
-        if settings.DEBUG == True:
+        if settings.DEBUG is True:
             return None
-
         domain = getattr(settings, 'SITE_DOMAIN', None)
         if not domain:
-            domain = Site.objects.get_current().domain
-
+            domain = get_current_site(request).domain
         if domain in request.get_host():
             return None
         return HttpResponsePermanentRedirect('%s://%s%s' % (
