@@ -51,3 +51,8 @@ def get_object_or_None(klass, *args, **kwargs):
         return queryset.get(*args, **kwargs)
     except queryset.model.DoesNotExist:
         return None
+
+
+def max_field_length(model, field_name):
+    """Returns a model field's max_length."""
+    return model._meta.get_field(field_name).max_length
