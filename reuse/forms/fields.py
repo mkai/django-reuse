@@ -1,5 +1,6 @@
 import re
 from django import forms
+from django.db import models
 from django.core.validators import validate_email
 from django.utils.translation import ugettext_lazy as _
 
@@ -30,3 +31,17 @@ class MultipleEmailField(forms.CharField):
                 error_msg = _(u'%s is not a valid e-mail address.' % email)
                 raise forms.ValidationError(error_msg)
         return emails
+
+
+class URLTextField(models.TextField):
+    """A URLField with an unlimited max_length."""
+    description = _("URL")
+
+    def formfield(self, **kwargs):
+        defaults = {
+            'form_class': forms.URLField,
+            'widget': forms.TextInput,
+        }
+        defaults.update(kwargs)
+        return super(URLTextField, self).formfield(**defaults)
+
