@@ -1,9 +1,14 @@
 import os
 import requests
 import urlparse
+from datetime import datetime
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
+from django.utils import timezone
 from django.utils.http import urlunquote
+
+# timezone-aware 0-timestamp
+TIMEZONE_EPOCH = timezone.make_aware(datetime(1970, 1, 1), timezone.utc)
 
 
 def file_from_url(url):
