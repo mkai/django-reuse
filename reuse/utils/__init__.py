@@ -4,6 +4,7 @@ import urlparse
 from datetime import datetime
 from django.core.files import File
 from django.core.files.temp import NamedTemporaryFile
+from django.shortcuts import _get_queryset
 from django.utils import timezone
 from django.utils.http import urlunquote
 
@@ -30,3 +31,23 @@ def file_from_url(url):
     except Exception, e:
         raise IOError(u'Couldn\'t get file from %s: %r' % (url, e))
     return name, fp, ctype
+
+
+def get_object_or_None(klass, *args, **kwargs):
+    """
+    Uses get() to return an object or None if the object does not exist.
+
+    klass may be a Model, Manager, or QuerySet object. All other passed
+    arguments and keyword arguments are used in the get() query.
+
+    Note: Like with get(), a MultipleObjectsReturned will be raised if more than one
+    object is found.
+
+    From: django-annoying
+
+    """
+    queryset = _get_queryset(klass)
+    try:
+        return queryset.get(*args, **kwargs)
+    except queryset.model.DoesNotExist:
+        return None
