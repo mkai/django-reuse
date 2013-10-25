@@ -39,6 +39,25 @@ class OverwritingFileSystemStorage(OverwritingStorageMixin, FileSystemStorage):
     pass
 
 
+class KeepExistingStorageMixin(object):
+    def get_available_name(self, name):
+        return name
+
+    def _save(self, name, content):
+        if self.exists(name):
+            return name  # do nothing if file exists
+        return super(KeepExistingStorageMixin, self)._save(name, content)
+
+
+class KeepExistingFileSystemStorage(KeepExistingStorageMixin, FileSystemStorage):
+    """
+    A FileSystemStorage that does nothing if the file to save already
+    exists. Useful for deduplicating files.
+
+    """
+    pass
+
+
 try:
     from storages.backends.sftpstorage import SFTPStorage
 except ImportError:
