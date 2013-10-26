@@ -6,6 +6,15 @@ from django.utils import timezone
 TIMEZONE_EPOCH = timezone.make_aware(datetime(1970, 1, 1), timezone.utc)
 
 
+def get_request_host(request):
+    return 'http{}://{}'.format(('', 's')[request.is_secure()],
+                                request.get_host())
+
+
+def get_request_url(request):
+    return request.build_absolute_uri(request.get_full_path())
+
+
 def get_object_or_None(klass, *args, **kwargs):
     """
     Uses get() to return an object or None if the object does not exist.
