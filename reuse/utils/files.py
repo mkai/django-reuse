@@ -76,7 +76,7 @@ def save_model_file(model_obj, field_name, filename, file, mimetype=None):
         getattr(model_obj, field_name).file.seek(0)
         getattr(model_obj, field_name).save(filename, file, save=False)  # WTF?
     except Exception as e:
-        raise IOError(u'Error while saving: {}'.format(e))
+        raise IOError(u'Error while saving: {!r}'.format(e))
 
 
 def save_model_image(model_obj, field_name, image_file, filename):
@@ -88,7 +88,7 @@ def save_model_image(model_obj, field_name, image_file, filename):
     try:
         Image.open(image_file)
     except Exception as e:
-        logger.debug(u'Couldn\'t read image file: {}'.format(e))
-        raise IOError(u'File not readable: {}'.format(e))
+        logger.debug(u'Couldn\'t read image file: {!r}'.format(e))
+        raise IOError(u'File not readable: {!r}'.format(e))
     # save the image to storage
     save_model_file(model_obj, field_name, filename, image_file, mimetype)
