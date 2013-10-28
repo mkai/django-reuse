@@ -82,6 +82,8 @@ def save_model_file(model_obj, field_name, filename, file, mimetype=None):
 def save_model_image(model_obj, field_name, image_file, filename):
     # accept only images
     mimetype = detect_file_mimetype(image_file)
+    if mimetype == 'application/x-empty':
+        mimetype = None
     if mimetype and not mimetype.startswith('image/'):
         raise ValueError(u'Non-image mimetype "{}"'.format(mimetype))
     # check if the file can be read by PIL/ Pillow
