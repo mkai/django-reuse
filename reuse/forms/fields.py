@@ -2,8 +2,9 @@ import re
 import json
 from django import forms
 from django.db import models
-from django.core.validators import validate_email
+from django.utils import six
 from django.utils.translation import ugettext_lazy as _
+from ..utils import is_valid_email
 
 email_separator_re = re.compile(r'[^\w\.\-\+@_]+')
 
@@ -26,11 +27,9 @@ class MultipleEmailField(forms.CharField):
         for email in emails:
             if not email.strip():
                 continue  # skip empty "addresses"
-            try:
-                validate_email(email)
-            except forms.ValidationError:
-                error_msg = _(u'%s is not a valid e-mail address.' % email)
-                raise forms.ValidationError(error_msg)
+            if not is_valid_email(email):
+                msg = _(u'%s is not a valid e-mail address.' % email)
+                raise forms.ValidationError(msg)
         return emails
 
 
@@ -106,7 +105,7 @@ class LazyJSONField(models.TextField):
     def to_python(self, value):
         if value is None:  # allow blank objects
             return None
-        if isinstance(value, basestring):
+        if isinstance(value, six.string_types):
             try:
                 value = json.loads(value)
             except ValueError:

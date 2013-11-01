@@ -14,16 +14,10 @@ def settings(request):
 
 
 def request_url(request):
-    """
-    Returns the request's URL, e. g. http(s)://myhostname.com/my-view/?x=1&y=2
-
-    """
+    """Returns a request's URL, e. g. http(s)://example.com/path/?x=1&y=2"""
     return {'REQUEST_URL': get_request_url(request)}
 
 
 def request_host(request):
-    """
-    Returns the request host + protocol, e. g. http(s)://myhostname.com
-
-    """
+    """Returns the request host + protocol, e. g. http(s)://example.com"""
     return {'REQUEST_HOST': get_request_host(request)}

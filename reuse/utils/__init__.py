@@ -1,4 +1,6 @@
 from datetime import datetime
+from django import forms
+from django.core.validators import validate_email
 from django.shortcuts import _get_queryset
 from django.utils import timezone
 
@@ -38,3 +40,11 @@ def get_object_or_None(klass, *args, **kwargs):
 def max_field_length(model, field_name):
     """Returns a model field's max_length."""
     return model._meta.get_field(field_name).max_length
+
+
+def is_valid_email(val):
+    try:
+        validate_email(val)
+        return True
+    except forms.ValidationError:
+        return False

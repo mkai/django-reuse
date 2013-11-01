@@ -1,8 +1,8 @@
+import os
+import datetime
 from django.core import urlresolvers
 from django.conf import settings
 from django.contrib.sitemaps import Sitemap
-import datetime
-import os
 
 
 # from: http://minimoesfuerzo.org/2011/02/12/sitemaps-django-static-pages/
@@ -13,10 +13,12 @@ class StaticSitemap(Sitemap):
     def __init__(self, patterns, static_url_names=[]):
         self.patterns = patterns
         self._items = {}
-        for p in self.patterns:
-            if (getattr(p, 'name', None) is not None and
-                (p.name.startswith('static_') or p.name in static_url_names)):
-                self._items[p.name] = self._get_modification_date(p)
+        for pattern in self.patterns:
+            name = getattr(pattern, 'name', None)
+            if name is None:
+                continue
+            if name.startswith('static_') or name in static_url_names:
+                self._items[name] = self._get_modification_date(pattern)
 
     def _get_modification_date(self, p):
         template = p.default_args.get('template')

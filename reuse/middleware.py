@@ -3,6 +3,7 @@ from django.conf import settings
 from django.http import (HttpResponse, HttpResponseRedirect,
                          HttpResponsePermanentRedirect)
 from django.utils.html import strip_spaces_between_tags
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.sites.models import get_current_site
 from django.contrib.redirects.models import Redirect
 
@@ -27,13 +28,6 @@ class HTTPBasicAuthMiddleware(object):
     From: joshsharp http://djangosnippets.org/snippets/2468/
 
     """
-    def unauthed(self):
-        response = HttpResponse("""<html><title>Auth required</title><body>
-                                <h1>Authorization Required</h1></body></html>""", mimetype="text/html")
-        response['WWW-Authenticate'] = 'Basic realm="Development"'
-        response.status_code = 401
-        return response
-
     def process_request(self, request):
         if not 'HTTP_AUTHORIZATION' in request.META:
             return self.unauthed()
@@ -44,9 +38,18 @@ class HTTPBasicAuthMiddleware(object):
                 return self.unauthed()
             auth = auth.strip().decode('base64')
             username, password = auth.split(':', 1)
-            if username == settings.BASIC_AUTH_USERNAME and password == settings.BASIC_AUTH_PASSWORD:
+            if (username == settings.BASIC_AUTH_USERNAME and
+                    password == settings.BASIC_AUTH_PASSWORD):
                 return None
             return self.unauthed()
+
+    def unauthed(self):
+        html_fmt = "<html><title>{}</title><body><h1>{}</h1></body></html>"
+        response = HttpResponse(html_fmt.format(_("Authorization required.")),
+                                content_type="text/html")
+        response['WWW-Authenticate'] = 'Basic realm="Development"'
+        response.status_code = 401
+        return response
 
 
 class DefaultSiteRedirectMiddleware(object):
@@ -156,14 +159,15 @@ class RegExRedirectFallbackMiddleware(object):
     """
     def process_response(self, request, response):
         if response.status_code != 404:
-            return response  # no need to check for a redirect for non-404 responses.
+            return response  # only check 404 responses.
         path = request.get_full_path()
         redirects = Redirect.objects.filter(site__id__exact=settings.SITE_ID)
         for r in redirects:
             try:
                 old_path = re.compile(r.old_path, re.IGNORECASE)
             except re.error:
-                # old_path does not compile into regex, ignore it and move on to the next one
+                # old_path does not compile into regex,
+                # ignore it and move on to the next one
                 continue
             if re.match(r.old_path, path):
                 new_path = r.new_path.replace('$', '\\')

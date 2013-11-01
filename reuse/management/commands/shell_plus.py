@@ -1,5 +1,5 @@
 """
-shell_plus management command. 
+shell_plus management command.
 
 Like the 'shell' command but autoloads the models of all installed Django apps.
 Stripped-down version of django_extensions/management/commands/shell_plus.py
