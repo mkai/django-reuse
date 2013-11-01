@@ -1,10 +1,8 @@
 import os
-import magic
 import logging
-import requests
 import urlparse
 import mimetypes
-from PIL import Image
+import warnings
 from django.core.files.temp import NamedTemporaryFile
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.utils.http import urlunquote
@@ -15,6 +13,11 @@ logger = logging.getLogger(__name__)
 
 def file_from_url(url):
     """Returns a file object from the data downloaded from the given URL."""
+    try:
+        import requests
+    except ImportError:
+        raise ImportError("file_from_url needs requests installed.")
+
     response = requests.get(url)
     return file_from_response(response)
 
@@ -36,6 +39,12 @@ def file_from_response(response):
 
 def detect_file_mimetype(file):
     """Detects file mime type from file header."""
+    try:
+        import magic
+    except ImportError:
+        warnings.warn('detect_file_mimetype needs python-magic installed')
+        return None
+
     try:
         return magic.from_buffer(file.read(1024), mime=True)
     except:
@@ -88,7 +97,10 @@ def save_model_image(model_obj, field_name, image_file, filename):
         raise ValueError(u'Non-image mimetype "{}"'.format(mimetype))
     # check if the file can be read by PIL/ Pillow
     try:
+        from PIL import Image
         Image.open(image_file)
+    except ImportError:
+        pass  # assume that user has PIL (needed for Django ImageField)
     except Exception as e:
         logger.debug(u'Couldn\'t read image file: {!r}'.format(e))
         raise IOError(u'File not readable: {!r}'.format(e))
