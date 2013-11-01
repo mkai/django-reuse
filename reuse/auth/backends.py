@@ -1,21 +1,16 @@
 """
 @author: chris http://djangosnippets.org/snippets/1845/
 updated to 1.3 by Lukasz Kidzinski
-source: http://djangosnippets.org/snippets/2463/
+Original source: http://djangosnippets.org/snippets/2463/
 """
-from django.contrib.auth.models import User
-from django.core.validators import email_re
+from django.contrib.auth import get_user_model
+from ..utils import is_valid_email
+
+User = get_user_model()
 
 
 class EmailBackend(object):
-    """
-    Authenticate with e-mail.
-
-    Use the e-mail, and password
-
-    Should work with django 1.3
-    """
-
+    """Authenticate users with their e-mail address and password."""
     supports_object_permissions = False
     supports_anonymous_user = False
     supports_inactive_user = False
@@ -24,7 +19,7 @@ class EmailBackend(object):
         return User.objects.get(email=email)
 
     def authenticate(self, username=None, password=None):
-        if email_re.search(username):
+        if is_valid_email(username):
             try:
                 user = self._get_user_by_email(username)
             except User.DoesNotExist:
