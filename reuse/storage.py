@@ -56,22 +56,3 @@ class KeepExistingFileSystemStorage(KeepExistingStorageMixin, FileSystemStorage)
 
     """
     pass
-
-
-try:
-    from storages.backends.sftpstorage import SFTPStorage
-except ImportError:
-    pass
-else:
-    class HTTPSFTPStorage(SFTPStorage):
-        """
-        A storage backend that uploads files to an FTP server and references
-        them under the URL accessible by an HTTP server.
-
-        The HTTP URL must be given as SFTP_STORAGE_HTTP_ROOT in settings.
-
-        """
-        base_url = settings.SFTP_STORAGE_HTTP_ROOT
-
-        def url(self, name):
-            return self.base_url + name
