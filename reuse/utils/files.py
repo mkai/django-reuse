@@ -1,12 +1,16 @@
 import os
 import logging
-import urlparse
 import mimetypes
 import warnings
 from django.core.files.temp import NamedTemporaryFile
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.utils.http import urlunquote
 from . import max_field_length
+
+try:
+    from urlparse import urlsplit
+except ImportError:
+    from urllib.parse import urlsplit
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +29,7 @@ def file_from_url(url):
 def file_from_response(response):
     if response.status_code == 204:  # No content
         return None, None, None
-    path = urlparse.urlsplit(response.url).path
+    path = urlsplit(response.url).path
     name = urlunquote(os.path.basename(path))
     content_type = response.headers['content-type']
     # create temp file with the downloaded data
@@ -46,9 +50,11 @@ def detect_file_mimetype(file):
         return None
 
     try:
-        return magic.from_buffer(file.read(1024), mime=True)
+        mime = magic.from_buffer(file.read(1024), mime=True)
     except:
         return None
+    else:
+        return mime.decode(encoding='UTF-8')
     finally:
         file.seek(0)
 
