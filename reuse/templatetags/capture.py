@@ -1,5 +1,7 @@
 # source: https://github.com/nathanborror/django-basic-apps/blob/
 # 01b37fb28605504893811ffac89cb97852f2e0a4/basic/tools/templatetags/capture.py
+from __future__ import unicode_literals
+
 from django import template
 from django.utils.safestring import mark_safe
 
@@ -11,8 +13,8 @@ def capture(parser, token):
     """{% capture as [foo] %}"""
     bits = token.split_contents()
     if len(bits) != 3:
-        raise template.TemplateSyntaxError(
-            "'capture' node requires `as (variable name)`.")
+        msg = "'capture' node requires `as (variable name)`."
+        raise template.TemplateSyntaxError(msg)
     nodelist = parser.parse(('endcapture',))
     parser.delete_first_token()
     return CaptureNode(nodelist, bits[2])

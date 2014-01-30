@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from django.conf import settings
 
 
@@ -15,4 +17,5 @@ class PaginationMixin(object):
         allow_empty_first_page =\
             getattr(settings, 'PAGINATION_ALLOW_EMPTY_FIRST_PAGE', True)
         return super(PaginationMixin, self).get_paginator(queryset, per_page,
-            orphans, allow_empty_first_page)
+                                                          orphans,
+                                                          allow_empty_first_page)

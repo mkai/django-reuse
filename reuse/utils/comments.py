@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 import re
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.comments.models import Comment
@@ -21,7 +23,7 @@ def annotate_with_comment_count(queryset):
     comment_table = Comment._meta.db_table
 
     # NOTE: ::text is specific to PostgreSQL
-    sql = """SELECT COUNT(*) FROM %s WHERE %s=%%s AND %s=%s::text""" % (
+    sql = 'SELECT COUNT(*) FROM %s WHERE %s=%%s AND %s=%s::text' % (
         _qn(comment_table),
         _qf(comment_table, 'content_type_id'),
         _qf(comment_table, 'object_pk'),

@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 import os
 import logging
 import mimetypes
@@ -91,7 +93,7 @@ def save_model_file(model_obj, field_name, filename, file, mimetype=None):
         getattr(model_obj, field_name).file.seek(0)
         getattr(model_obj, field_name).save(filename, file, save=False)  # WTF?
     except Exception as e:
-        raise IOError(u'Error while saving: {!r}'.format(e))
+        raise IOError('Error while saving: {!r}'.format(e))
 
 
 def save_model_image(model_obj, field_name, image_file, filename):
@@ -100,7 +102,7 @@ def save_model_image(model_obj, field_name, image_file, filename):
     if mimetype == 'application/x-empty':
         mimetype = None
     if mimetype and not mimetype.startswith('image/'):
-        raise ValueError(u'Non-image mimetype "{}"'.format(mimetype))
+        raise ValueError('Non-image mimetype "{}"'.format(mimetype))
     # check if the file can be read by PIL/ Pillow
     try:
         from PIL import Image
@@ -108,7 +110,7 @@ def save_model_image(model_obj, field_name, image_file, filename):
     except ImportError:
         pass  # assume that user has PIL (needed for Django ImageField)
     except Exception as e:
-        logger.debug(u'Couldn\'t read image file: {!r}'.format(e))
-        raise IOError(u'File not readable: {!r}'.format(e))
+        logger.debug('Couldn\'t read image file: {!r}'.format(e))
+        raise IOError('File not readable: {!r}'.format(e))
     # save the image to storage
     save_model_file(model_obj, field_name, filename, image_file, mimetype)

@@ -1,4 +1,6 @@
 # from: http://djangosnippets.org/snippets/2424/
+from __future__ import unicode_literals
+
 from django.template import Node, Library, Variable, FilterExpression, TemplateSyntaxError
 import math
 import re
@@ -47,7 +49,7 @@ def do_math(parser, token):
 
     Evaluates a math expression in the current context and saves the value into a variable with the given name.
 
-    "$<number>" is a placeholder in the math expression. It will be replaced by the value of the argument at index <number> - 1. 
+    "$<number>" is a placeholder in the math expression. It will be replaced by the value of the argument at index <number> - 1.
     Arguments are static values or variables immediately after 'math' tag and before the expression (the third last token).
 
     Example usage,
