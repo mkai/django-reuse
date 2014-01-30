@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from functools import wraps
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils.decorators import available_attrs
@@ -17,7 +19,7 @@ def logout_required(function=None, redirect_url=None):
             else:
                 if redirect_url:
                     return HttpResponseRedirect(redirect_url)
-                return HttpResponse(u'You need to be logged out to do this.')
+                return HttpResponse('You need to be logged out to do this.')
         return _wrapped_view
     if function:
         return decorator(function)

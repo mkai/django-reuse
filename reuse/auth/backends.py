@@ -3,6 +3,8 @@
 updated to 1.3 by Lukasz Kidzinski
 Original source: http://djangosnippets.org/snippets/2463/
 """
+from __future__ import unicode_literals
+
 from django.contrib.auth import get_user_model
 from ..utils import is_valid_email
 

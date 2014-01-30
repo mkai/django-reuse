@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from django.conf import settings as app_settings
 from .utils import get_request_host, get_request_url
 
