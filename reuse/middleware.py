@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 import re
 from django.conf import settings
 from django.http import (HttpResponse, HttpResponseRedirect,
@@ -76,7 +78,7 @@ class DefaultSiteRedirectMiddleware(object):
             domain = get_current_site(request).domain
         if domain in request.get_host():
             return None
-        return HttpResponsePermanentRedirect('%s://%s%s' % (
+        return HttpResponsePermanentRedirect('{}://{}{}'.format(
             request.is_secure() and 'https' or 'http',
             domain,
             request.get_full_path(),

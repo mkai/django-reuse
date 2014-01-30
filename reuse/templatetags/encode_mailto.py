@@ -1,11 +1,9 @@
-# from: http://djangosnippets.org/snippets/216/
+# From: http://djangosnippets.org/snippets/216/
+from __future__ import unicode_literals
+
 import random
 from django import template
-"""
-    Randomized string encoding
-    Inspired by John Gruber's Markdown:
-    http://daringfireball.net/projects/markdown/syntax#autolink
-"""
+
 register = template.Library()
 
 
@@ -49,7 +47,7 @@ def encode_mailto(value, arg=None):
 
     # if no arg given, use address as name
     name = encode_string(arg) if arg else address
-    tag = u"<a href=\"%s%s\">%s</a>" % (mailto, address, name)
+    tag = "<a href=\"{}{}\">{}</a>".format(mailto, address, name)
     return tag
 encode_mailto.is_safe = True
 register.filter("encode_mailto", encode_mailto)

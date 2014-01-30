@@ -12,6 +12,8 @@ Usage:
     {% get_view_name request.path as view_name %}
 
 """
+from __future__ import unicode_literals
+
 from django.core.urlresolvers import RegexURLPattern, Resolver404, get_resolver
 from django.template import Library
 
@@ -27,7 +29,7 @@ def _pattern_resolve_to_name(self, path):
         elif hasattr(self, '_callback_str'):
             name = self._callback_str
         else:
-            name = "%s.%s" % (self.callback.__module__, self.callback.func_name)
+            name = '{}.{}'.format(self.callback.__module__, self.callback.func_name)
         return name
 
 

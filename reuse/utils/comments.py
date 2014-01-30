@@ -5,7 +5,7 @@ from django.db.connection.ops import quote_name as _qn
 
 
 def _qf(table, field):  # quote table and field
-    return '%s.%s' % (_qn(table), _qn(field))
+    return '{}.{}'.format(_qn(table), _qn(field))
 
 
 def annotate_with_comment_count(queryset):

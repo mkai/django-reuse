@@ -5,6 +5,8 @@ Like the 'shell' command but autoloads the models of all installed Django apps.
 Stripped-down version of django_extensions/management/commands/shell_plus.py
 
 """
+from __future__ import unicode_literals
+
 from optparse import make_option
 from django.core.management.base import NoArgsCommand
 
@@ -49,19 +51,19 @@ def import_objects(options, style):
             try:
                 imported_object = getattr(__import__(app_mod.__name__, {}, {}, model.__name__), model.__name__)
                 model_name = model.__name__
-                if "%s.%s" % (app_name, model_name) in dont_load:
+                if "{}.{}".format(app_name, model_name) in dont_load:
                     continue
                 alias = app_aliases.get(model_name, model_name)
                 imported_objects[alias] = imported_object
                 if model_name == alias:
                     model_labels.append(model_name)
                 else:
-                    model_labels.append("%s (as %s)" % (model_name, alias))
+                    model_labels.append("{} (as {})".format(model_name, alias))
             except AttributeError as e:
                 if not quiet_load:
-                    print(style.ERROR("Failed to import '%s' from '%s' reason: %s" % (model.__name__, app_name, str(e))))
+                    print(style.ERROR("Failed to import '{}' from '{}' reason: {}".format(model.__name__, app_name, str(e))))
                 continue
         if not quiet_load:
-            print(style.SQL_COLTYPE("From '%s' autoload: %s" % (app_mod.__name__.split('.')[-2], ", ".join(model_labels))))
+            print(style.SQL_COLTYPE("From '{}' autoload: {}".format(app_mod.__name__.split('.')[-2], ", ".join(model_labels))))
 
     return imported_objects

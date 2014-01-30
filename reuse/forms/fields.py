@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 import re
 import json
 from django import forms
@@ -28,7 +30,7 @@ class MultipleEmailField(forms.CharField):
             if not email.strip():
                 continue  # skip empty "addresses"
             if not is_valid_email(email):
-                msg = _(u'%s is not a valid e-mail address.' % email)
+                msg = _('{} is not a valid e-mail address.'.format(email))
                 raise forms.ValidationError(msg)
         return emails
 
@@ -65,7 +67,7 @@ class Creator(object):
             cache = {}
             setattr(obj, self._parent_key, cache)
 
-        key = '%s_deserialized' % self.field.name
+        key = '{}_deserialized'.format(self.field.name)
 
         if cache.get(key, False):
             return obj.__dict__[self.field.name]
@@ -86,7 +88,7 @@ class LazyJSONField(models.TextField):
 
     def __init__(self, *args, **kwargs):
         self.default_error_messages = {
-            'invalid': _(u'Enter a valid JSON object')
+            'invalid': _('Enter a valid JSON object')
         }
         self._db_type = kwargs.pop('db_type', None)
         self.evaluate_formfield = kwargs.pop('evaluate_formfield', False)
@@ -130,10 +132,10 @@ class LazyJSONField(models.TextField):
             return self.get_db_prep_value(
                 getattr(model_instance, self.attname, None), force=True)
 
-        setattr(cls, 'get_%s_json' % self.name, get_json)
+        setattr(cls, 'get_{}_json'.format(self.name), get_json)
 
         def set_json(model_instance, value):
             return setattr(model_instance, self.attname, self.to_python(value))
 
-        setattr(cls, 'set_%s_json' % self.name, set_json)
+        setattr(cls, 'set_{}_json'.format(self.name), set_json)
         setattr(cls, name, Creator(self))  # deferred deserialization
