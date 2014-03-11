@@ -19,7 +19,7 @@ setup(
     author_email='github@sensun.org',
     url='https://github.com/mkai/django-reuse',
     packages=find_packages(exclude=['tests*']),
-    install_requires=['django'],
+    install_requires=['Django'],
     classifiers=[
         'Development Status :: 2 - Alpha',
         'Environment :: Web Environment',
