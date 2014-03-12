@@ -46,8 +46,8 @@ class HTTPBasicAuthMiddleware(object):
             return self.unauthed()
 
     def unauthed(self):
-        html_fmt = "<html><title>{}</title><body><h1>{}</h1></body></html>"
-        response = HttpResponse(html_fmt.format(_("Authorization required.")),
+        html = "<html><title>{msg}</title><body><h1>{msg}</h1></body></html>"
+        response = HttpResponse(html.format(msg=_("Authorization required.")),
                                 content_type="text/html")
         response['WWW-Authenticate'] = 'Basic realm="Development"'
         response.status_code = 401
