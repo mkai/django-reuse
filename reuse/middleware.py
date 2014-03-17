@@ -10,6 +10,34 @@ from django.contrib.sites.models import get_current_site
 from django.contrib.redirects.models import Redirect
 
 
+class SSLRedirectMiddleware(object):
+    """Redirects all non-HTTPS requests to their equivalent HTTPS URL."""
+    def __init__(self, *args, **kwargs):
+        self.enabled = getattr(settings, 'SSL_REDIRECT_ENABLED', False)
+        self.redirect_port = getattr(settings, 'SSL_REDIRECT_PORT', None)
+        self.redirect_cls = HttpResponsePermanentRedirect
+        if not getattr(settings, 'SSL_REDIRECT_PERMANENT', True):
+            self.redirect_cls = HttpResponseRedirect
+
+    def process_request(self, request):
+        # if disabled or already HTTPS, do nothing
+        if not self.enabled or request.is_secure():
+            return None
+        # replace protocol
+        url = request.build_absolute_uri()
+        secure_url = url.replace('http://', 'https://', 1)
+        # apply custom redirect port if set
+        # seems like this should be easier...
+        if self.redirect_port and self.redirect_port not in (80, 443):
+            current_port = request.META['SERVER_PORT']
+            if current_port == '80' and not ':80' in secure_url:
+                secure_url = secure_url + ':{}'.format(self.redirect_port)
+            else:
+                secure_url = secure_url.replace(':{}'.format(current_port),
+                                                ':{}'.format(self.redirect_port))
+        return redirect_cls(secure_url)
+
+
 class HTTPBasicAuthMiddleware(object):
     """
     A very basic Basic Auth middleware that uses a username/password defined
