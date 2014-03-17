@@ -35,7 +35,7 @@ class SSLRedirectMiddleware(object):
             else:
                 secure_url = secure_url.replace(':{}'.format(current_port),
                                                 ':{}'.format(self.redirect_port))
-        return redirect_cls(secure_url)
+        return self.redirect_cls(secure_url)
 
 
 class HTTPBasicAuthMiddleware(object):
